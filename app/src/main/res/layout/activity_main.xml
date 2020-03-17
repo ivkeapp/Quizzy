@@ -47,6 +47,7 @@
         app:layout_constraintHorizontal_weight="2"
         android:layout_margin="48dp">
         <Button
+            android:id="@+id/true_btn"
             android:layout_width="140dp"
             android:layout_height="wrap_content"
             android:text="@string/true_button"
@@ -54,6 +55,7 @@
             android:layout_marginRight="8dp"
             android:textColor="@color/white"></Button>
         <Button
+            android:id="@+id/false_btn"
             android:layout_width="140dp"
             android:layout_height="wrap_content"
             android:text="@string/false_button"
