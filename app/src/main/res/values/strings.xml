@@ -1,3 +1,24 @@
 <resources>
     <string name="app_name">Quizzy</string>
+
+    <string name="true_button">True</string>
+    <string name="false_button">False</string>
+    <string name="score">Score 0/10</string>
+
+    <string name="question_1">Quizzy</string>
+    <string name="question_2">Quizzy</string>
+    <string name="question_3">Quizzy</string>
+    <string name="question_4">Quizzy</string>
+    <string name="question_5">Quizzy</string>
+    <string name="question_6">Quizzy</string>
+    <string name="question_7">Quizzy</string>
+    <string name="question_8">Quizzy</string>
+    <string name="question_9">Quizzy</string>
+    <string name="question_10">Quizzy</string>
+    <string name="question_11">Quizzy</string>
+    <string name="question_12">Quizzy</string>
+    <string name="question_13">Quizzy</string>
+    <string name="question_14">Quizzy</string>
+
+
 </resources>
