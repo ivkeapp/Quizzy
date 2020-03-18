@@ -1,10 +1,12 @@
 package com.example.quizzy;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -16,11 +18,8 @@ import com.example.quizzy.model.TrueFalse;
 
 public class MainActivity extends AppCompatActivity {
 
-    //TODO: Declare constant variables
     final int PROGRESS_BAR_INCREMENT = 1;
 
-
-    //TODO: Declare member variables
     Button mTrueButton;
     Button mFalseButton;
     TextView mQuestionTextView, mScoreTextView;
@@ -48,12 +47,22 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        if(savedInstanceState != null){
+            Log.d("Quizzy", String.valueOf(savedInstanceState.getInt("Score")));
+            mScore = savedInstanceState.getInt("Score");
+            mIndex = savedInstanceState.getInt("Index");
+        } else {
+            //mScore = 0;
+            //mIndex = 0;
+        }
+
         mTrueButton = findViewById(R.id.true_btn);
         mFalseButton = findViewById(R.id.false_btn);
         mQuestionTextView = findViewById(R.id.question);
         mScoreTextView = findViewById(R.id.score);
         mProgressBar = findViewById(R.id.progress);
 
+        mScoreTextView.setText("Score " + mScore + "/" + mQuestions.length);
         mQuestion = mQuestions[mIndex].getmQuestionID();
         mQuestionTextView.setText(mQuestion);
 
@@ -101,7 +110,6 @@ public class MainActivity extends AppCompatActivity {
             });
             ad.show();
         }
-        Log.d("Quizzy", String.valueOf(mIndex));
 
         mQuestion = mQuestions[mIndex].getmQuestionID();
         mQuestionTextView.setText(mQuestion);
@@ -120,5 +128,13 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(this, "Wrong answer!", Toast.LENGTH_SHORT).show();
         }
 
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putInt("Score", mScore);
+        outState.putInt("Index", mIndex);
     }
 }
