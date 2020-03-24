@@ -15,6 +15,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.quizzy.model.TrueFalse;
+import com.example.quizzy.retrofit.APIUtils;
+import com.example.quizzy.retrofit.GetSelectedQuestions;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -26,21 +36,23 @@ public class MainActivity extends AppCompatActivity {
     ProgressBar mProgressBar;
 
     int mIndex;
-    int mQuestion;
+    String mQuestion;
     int mScore;
 
-    private TrueFalse [] mQuestions = new TrueFalse[]{
-            new TrueFalse(R.string.question_1, true),
-            new TrueFalse(R.string.question_2, false),
-            new TrueFalse(R.string.question_3, true),
-            new TrueFalse(R.string.question_4, false),
-            new TrueFalse(R.string.question_5, true),
-            new TrueFalse(R.string.question_6, false),
-            new TrueFalse(R.string.question_7, true),
-            new TrueFalse(R.string.question_8, true),
-            new TrueFalse(R.string.question_9, true),
-            new TrueFalse(R.string.question_10, false)
-    };
+    final TrueFalse[] mQuestions = new TrueFalse[10];
+
+//    private TrueFalse [] mQuestions = new TrueFalse[]{
+//            new TrueFalse(R.string.question_1, true),
+//            new TrueFalse(R.string.question_2, false),
+//            new TrueFalse(R.string.question_3, true),
+//            new TrueFalse(R.string.question_4, false),
+//            new TrueFalse(R.string.question_5, true),
+//            new TrueFalse(R.string.question_6, false),
+//            new TrueFalse(R.string.question_7, true),
+//            new TrueFalse(R.string.question_8, true),
+//            new TrueFalse(R.string.question_9, true),
+//            new TrueFalse(R.string.question_10, false)
+//    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,9 +74,7 @@ public class MainActivity extends AppCompatActivity {
         mScoreTextView = findViewById(R.id.score);
         mProgressBar = findViewById(R.id.progress);
 
-        mScoreTextView.setText("Score " + mScore + "/" + mQuestions.length);
-        mQuestion = mQuestions[mIndex].getmQuestionID();
-        mQuestionTextView.setText(mQuestion);
+
 
         mTrueButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -81,6 +91,53 @@ public class MainActivity extends AppCompatActivity {
                 updateQuestion();
             }
         });
+
+
+
+        GetSelectedQuestions getServise;
+        getServise = APIUtils.getAPIServiceFetchAll();
+        getServise.getAllNews().enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                if (response.isSuccessful()) {
+                    //Log.d("responser", response.body());
+                    if (response.body() != null) {
+                        String JSONresponse = response.body();
+                        //Log.d("responser", JSONresponse);
+                        try {
+                            JSONObject obj = new JSONObject(response.body());
+                            JSONArray dataArray  = obj.getJSONArray("data");
+                            for (int i = 0; i < dataArray.length(); i++){
+                                String question;
+                                int IntIsTrue;
+                                boolean isTrue = false;
+
+                                JSONObject dataobj = dataArray.getJSONObject(i);
+                                question = dataobj.getString("question");
+                                IntIsTrue = dataobj.getInt("is_true");
+                                if(IntIsTrue==1){
+                                    isTrue = true;
+                                }
+                                Log.d("responser", question + isTrue);
+                                mQuestions[i] = new TrueFalse(i, isTrue, question);
+                                mScoreTextView.setText("Score " + mScore + "/" + mQuestions.length);
+                                mQuestion = mQuestions[mIndex].getmQuestion();
+                                mQuestionTextView.setText(mQuestion);
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                Log.d("responser", t.getMessage());
+            }
+        });
+
     }
 
     private void updateQuestion() {
@@ -111,7 +168,7 @@ public class MainActivity extends AppCompatActivity {
             ad.show();
         }
 
-        mQuestion = mQuestions[mIndex].getmQuestionID();
+        mQuestion = mQuestions[mIndex].getmQuestion();
         mQuestionTextView.setText(mQuestion);
         mProgressBar.incrementProgressBy(PROGRESS_BAR_INCREMENT);
         mScoreTextView.setText("Score " + mScore + "/" + mQuestions.length);
