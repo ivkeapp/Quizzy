@@ -157,6 +157,7 @@ public class MainActivity extends AppCompatActivity {
                 public void onClick(DialogInterface dialog, int which) {
                     recreate();
                     mProgressBar.setProgress(0);
+                    mScore = 0;
                 }
             });
             ad.setNegativeButton("Close app", new DialogInterface.OnClickListener() {

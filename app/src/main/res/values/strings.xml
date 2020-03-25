@@ -6,7 +6,7 @@
     <string name="score">Score 0/10</string>
     <string name="welcome_msg">Welcome to Quizzy</string>
 
-    <string name="question_1">Multithreading is Java feature.</string>
+    <string name="question_1">Loading question...</string>
     <string name="question_2">Java satisfy all Object-oriented concepts.</string>
     <string name="question_3">Java supports the creation and existence of abstract classes that expose interfaces.</string>
     <string name="question_4">Java does not have composition, association and aggregation.</string>
